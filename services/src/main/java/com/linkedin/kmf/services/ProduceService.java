@@ -97,15 +97,11 @@ public class ProduceService implements Service {
       }
     }
 
-    double partitionsToBrokersRatio = 1;
-    int topicReplicationFactor = 1;
     int existingPartitionCount = Utils.getPartitionNumForTopic(_zkConnect, _topic);
-
     if (existingPartitionCount <= 0) {
       if (config.getBoolean(CommonServiceConfig.TOPIC_CREATION_ENABLED_CONFIG)) {
         _partitionNum.set(
-            Utils.createMonitoringTopicIfNotExists(_zkConnect, _topic, topicReplicationFactor,
-                partitionsToBrokersRatio));
+            Utils.createMonitoringTopicIfNotExists(_zkConnect, _topic, 1, 1));
       } else {
         throw new RuntimeException("Can not find valid partition number for topic " + _topic +
             ". Please verify that the topic \"" + _topic + "\" has been created. Ideally the partition number should be" +
